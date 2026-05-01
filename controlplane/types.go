@@ -9,18 +9,18 @@ type Config struct {
 }
 
 type EnsureTenantRequest struct {
-	ExternalSource      string `json:"externalSource"`
-	ExternalSubjectType string `json:"externalSubjectType"`
-	ExternalSubjectID   string `json:"externalSubjectId"`
+	ExternalSource      string `json:"externalSource" binding:"required"`
+	ExternalSubjectType string `json:"externalSubjectType" binding:"required"`
+	ExternalSubjectID   string `json:"externalSubjectId" binding:"required"`
 	DisplayName         string `json:"displayName,omitempty"`
 	SlugHint            string `json:"slugHint,omitempty"`
 	IdempotencyKey      string `json:"idempotencyKey,omitempty"`
 }
 
 type TenantStatusRequest struct {
-	ExternalSource      string
-	ExternalSubjectType string
-	ExternalSubjectID   string
+	ExternalSource      string `json:"externalSource" form:"externalSource" binding:"required"`
+	ExternalSubjectType string `json:"externalSubjectType" form:"externalSubjectType" binding:"required"`
+	ExternalSubjectID   string `json:"externalSubjectId" form:"externalSubjectId" binding:"required"`
 }
 
 type TenantControlPlaneResponse struct {
@@ -32,10 +32,10 @@ type TenantControlPlaneResponse struct {
 }
 
 type EnsureServiceAccountRequest struct {
-	ArcubaseTenantID    string `json:"arcubaseTenantId"`
-	ExternalSource      string `json:"externalSource"`
-	ExternalSubjectType string `json:"externalSubjectType"`
-	ExternalSubjectID   string `json:"externalSubjectId"`
+	ArcubaseTenantID    string `json:"arcubaseTenantId" binding:"required"`
+	ExternalSource      string `json:"externalSource" binding:"required"`
+	ExternalSubjectType string `json:"externalSubjectType" binding:"required"`
+	ExternalSubjectID   string `json:"externalSubjectId" binding:"required"`
 	DisplayName         string `json:"displayName,omitempty"`
 	AvatarURL           string `json:"avatarUrl,omitempty"`
 	Bio                 string `json:"bio,omitempty"`
@@ -61,8 +61,8 @@ type ServiceAccountControlPlaneResponse struct {
 }
 
 type IssueServiceAccountRuntimeCredentialRequest struct {
-	ArcubaseTenantID string   `json:"arcubaseTenantId"`
-	RequestedScope   []string `json:"requestedScope"`
+	ArcubaseTenantID string   `json:"arcubaseTenantId" binding:"required"`
+	RequestedScope   []string `json:"requestedScope" binding:"required"`
 }
 
 type ServiceAccountRuntimeCredentialResponse struct {

@@ -1,0 +1,426 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/internal/service-accounts/ensure": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Ensure service account request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.EnsureServiceAccountRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/service-accounts/{id}/profile/sync": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Service account id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Sync service account profile request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.EnsureServiceAccountRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/service-accounts/{id}/runtime-credential": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Service account id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Issue runtime credential request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.IssueServiceAccountRuntimeCredentialRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/tenants/ensure": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Ensure tenant request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.EnsureTenantRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/tenants/status": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "External source",
+                        "name": "externalSource",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "External subject type",
+                        "name": "externalSubjectType",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "External subject id",
+                        "name": "externalSubjectId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "pin.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {
+                    "$ref": "#/definitions/pin.ResponseError"
+                },
+                "meta": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "trace_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "pin.ResponseError": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.EnsureServiceAccountRequest": {
+            "type": "object",
+            "required": [
+                "arcubaseTenantId",
+                "externalSource",
+                "externalSubjectId",
+                "externalSubjectType"
+            ],
+            "properties": {
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "avatarUrl": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
+                "displayName": {
+                    "type": "string"
+                },
+                "externalSource": {
+                    "type": "string"
+                },
+                "externalSubjectId": {
+                    "type": "string"
+                },
+                "externalSubjectType": {
+                    "type": "string"
+                },
+                "idempotencyKey": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.EnsureTenantRequest": {
+            "type": "object",
+            "required": [
+                "externalSource",
+                "externalSubjectId",
+                "externalSubjectType"
+            ],
+            "properties": {
+                "displayName": {
+                    "type": "string"
+                },
+                "externalSource": {
+                    "type": "string"
+                },
+                "externalSubjectId": {
+                    "type": "string"
+                },
+                "externalSubjectType": {
+                    "type": "string"
+                },
+                "idempotencyKey": {
+                    "type": "string"
+                },
+                "slugHint": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.IssueServiceAccountRuntimeCredentialRequest": {
+            "type": "object",
+            "required": [
+                "arcubaseTenantId",
+                "requestedScope"
+            ],
+            "properties": {
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "requestedScope": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "vo.ServiceAccountControlPlaneResponse": {
+            "type": "object",
+            "properties": {
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "avatarUrl": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "boolean"
+                },
+                "displayName": {
+                    "type": "string"
+                },
+                "externalSource": {
+                    "type": "string"
+                },
+                "externalSubjectId": {
+                    "type": "string"
+                },
+                "externalSubjectType": {
+                    "type": "string"
+                },
+                "profileSynced": {
+                    "type": "boolean"
+                },
+                "profileSyncedAt": {
+                    "type": "string"
+                },
+                "serviceAccountBindingStatus": {
+                    "type": "string"
+                },
+                "serviceAccountId": {
+                    "type": "string"
+                },
+                "tenantUserId": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.ServiceAccountRuntimeCredentialResponse": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string"
+                },
+                "credentialType": {
+                    "type": "string"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "vo.TenantControlPlaneResponse": {
+            "type": "object",
+            "properties": {
+                "arcubaseInstanceId": {
+                    "type": "string"
+                },
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "arcubaseTenantSlug": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "boolean"
+                },
+                "tenantBindingStatus": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
