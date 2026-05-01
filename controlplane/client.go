@@ -104,14 +104,20 @@ func decodeResponse[T any](resp *http.Response, err error) (*T, error) {
 		return nil, decodeErr
 	}
 
+	if envelope.Error != nil {
+		apiErr := &APIError{StatusCode: resp.StatusCode}
+		apiErr.Code = envelope.Error.Code
+		apiErr.Key = envelope.Error.Key
+		apiErr.Message = envelope.Error.Message
+		apiErr.Type = envelope.Error.Type
+		if apiErr.Code == "" && apiErr.Key == "" && apiErr.Message == "" {
+			apiErr.Message = fmt.Sprintf("control-plane response status %d", resp.StatusCode)
+		}
+		return nil, apiErr
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		apiErr := &APIError{StatusCode: resp.StatusCode}
-		if envelope.Error != nil {
-			apiErr.Code = envelope.Error.Code
-			apiErr.Key = envelope.Error.Key
-			apiErr.Message = envelope.Error.Message
-			apiErr.Type = envelope.Error.Type
-		}
 		if apiErr.Code == "" && apiErr.Key == "" && apiErr.Message == "" {
 			apiErr.Message = fmt.Sprintf("control-plane response status %d", resp.StatusCode)
 		}

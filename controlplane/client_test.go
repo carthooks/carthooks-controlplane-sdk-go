@@ -85,3 +85,34 @@ func TestGetTenantStatus(t *testing.T) {
 		t.Fatalf("unexpected status: %s", resp.TenantBindingStatus)
 	}
 }
+
+func TestEnsureTenant_ReturnsEnvelopeErrorEvenWhenHTTP200(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"error": map[string]any{
+				"code":    "CONTROL_PLANE_UNAUTHORIZED",
+				"message": "Control-plane unauthorized",
+				"type":    "user",
+				"key":     "CONTROL_PLANE_UNAUTHORIZED",
+			},
+		})
+	}))
+	defer server.Close()
+
+	client := NewClient(Config{BaseURL: server.URL, InternalAuthKey: "secret"})
+	resp, err := client.EnsureTenant(context.Background(), EnsureTenantRequest{
+		ExternalSource:      "botworks",
+		ExternalSubjectType: "team",
+		ExternalSubjectID:   "team-1",
+	})
+	if err == nil {
+		t.Fatalf("expected error, got nil response=%+v", resp)
+	}
+	apiErr, ok := err.(*APIError)
+	if !ok {
+		t.Fatalf("expected *APIError, got %T", err)
+	}
+	if apiErr.Code != "CONTROL_PLANE_UNAUTHORIZED" {
+		t.Fatalf("unexpected code: %s", apiErr.Code)
+	}
+}
