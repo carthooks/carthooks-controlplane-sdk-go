@@ -11,6 +11,27 @@ import (
 	"time"
 )
 
+type traceIDContextKey struct{}
+
+func ContextWithTraceID(ctx context.Context, traceID string) context.Context {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	traceID = strings.TrimSpace(traceID)
+	if traceID == "" {
+		return ctx
+	}
+	return context.WithValue(ctx, traceIDContextKey{}, traceID)
+}
+
+func TraceIDFromContext(ctx context.Context) string {
+	if ctx == nil {
+		return ""
+	}
+	traceID, _ := ctx.Value(traceIDContextKey{}).(string)
+	return strings.TrimSpace(traceID)
+}
+
 type Client struct {
 	baseURL         string
 	internalAuthKey string
@@ -55,6 +76,10 @@ func (c *Client) IssueServiceAccountRuntimeCredential(ctx context.Context, servi
 	return doJSON[IssueServiceAccountRuntimeCredentialRequest, ServiceAccountRuntimeCredentialResponse](ctx, c, http.MethodPost, path, req, nil)
 }
 
+func (c *Client) IssueRuntimeSession(ctx context.Context, req IssueRuntimeSessionRequest) (*RuntimeSessionResponse, error) {
+	return doJSON[IssueRuntimeSessionRequest, RuntimeSessionResponse](ctx, c, http.MethodPost, "/api/internal/runtime-sessions/issue", req, nil)
+}
+
 func doJSON[Req any, Resp any](ctx context.Context, c *Client, method, path string, reqBody Req, params url.Values) (*Resp, error) {
 	fullURL, err := url.JoinPath(c.baseURL, path)
 	if err != nil {
@@ -85,6 +110,10 @@ func doJSON[Req any, Resp any](ctx context.Context, c *Client, method, path stri
 	}
 	if c.internalAuthKey != "" {
 		httpReq.Header.Set("X-Internal-Auth", c.internalAuthKey)
+	}
+	if traceID := TraceIDFromContext(ctx); traceID != "" {
+		httpReq.Header.Set("X-Trace-Id", traceID)
+		httpReq.Header.Set("X-Request-Id", traceID)
 	}
 
 	return decodeResponse[Resp](c.httpClient.Do(httpReq))

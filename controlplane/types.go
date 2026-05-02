@@ -70,7 +70,19 @@ type ServiceAccountRuntimeCredentialResponse struct {
 	AccessToken    string    `json:"accessToken"`
 	ExpiresAt      time.Time `json:"expiresAt"`
 	Scope          []string  `json:"scope"`
+	TenantUserID   string    `json:"tenantUserId"`
+	SubjectType    string    `json:"subjectType,omitempty"`
+	SubjectID      string    `json:"subjectId,omitempty"`
 }
+
+type IssueRuntimeSessionRequest struct {
+	ArcubaseTenantID string   `json:"arcubaseTenantId" binding:"required"`
+	SubjectType      string   `json:"subjectType" binding:"required"`
+	SubjectID        string   `json:"subjectId,omitempty"`
+	RequestedScope   []string `json:"requestedScope" binding:"required"`
+}
+
+type RuntimeSessionResponse = ServiceAccountRuntimeCredentialResponse
 
 type envelopeError struct {
 	Code    string `json:"code"`

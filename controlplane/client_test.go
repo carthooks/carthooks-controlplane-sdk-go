@@ -19,6 +19,12 @@ func TestEnsureTenant(t *testing.T) {
 		if r.Header.Get("X-Internal-Auth") != "secret" {
 			t.Fatalf("missing X-Internal-Auth header")
 		}
+		if r.Header.Get("X-Trace-Id") != "trace_test_1" {
+			t.Fatalf("missing X-Trace-Id header")
+		}
+		if r.Header.Get("X-Request-Id") != "trace_test_1" {
+			t.Fatalf("missing X-Request-Id header")
+		}
 
 		var req EnsureTenantRequest
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -39,7 +45,7 @@ func TestEnsureTenant(t *testing.T) {
 	defer server.Close()
 
 	client := NewClient(Config{BaseURL: server.URL, InternalAuthKey: "secret"})
-	resp, err := client.EnsureTenant(context.Background(), EnsureTenantRequest{
+	resp, err := client.EnsureTenant(ContextWithTraceID(context.Background(), "trace_test_1"), EnsureTenantRequest{
 		ExternalSource:      "botworks",
 		ExternalSubjectType: "team",
 		ExternalSubjectID:   "team-1",
