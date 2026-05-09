@@ -52,6 +52,7 @@ type ServiceAccountControlPlaneResponse struct {
 	Created                     bool       `json:"created"`
 	ArcubaseTenantID            string     `json:"arcubaseTenantId"`
 	TenantUserID                string     `json:"tenantUserId"`
+	TenantUserNumericID         uint       `json:"tenantUserNumericId"`
 	ExternalSource              string     `json:"externalSource"`
 	ExternalSubjectType         string     `json:"externalSubjectType"`
 	ExternalSubjectID           string     `json:"externalSubjectId"`
