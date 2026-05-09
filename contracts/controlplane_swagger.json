@@ -263,7 +263,8 @@
                 "arcubaseTenantId",
                 "externalSource",
                 "externalSubjectId",
-                "externalSubjectType"
+                "externalSubjectType",
+                "isAdmin"
             ],
             "properties": {
                 "arcubaseTenantId": {
@@ -289,6 +290,9 @@
                 },
                 "idempotencyKey": {
                     "type": "string"
+                },
+                "isAdmin": {
+                    "type": "boolean"
                 }
             }
         },

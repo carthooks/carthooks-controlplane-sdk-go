@@ -39,6 +39,7 @@ type EnsureServiceAccountRequest struct {
 	DisplayName         string `json:"displayName,omitempty"`
 	AvatarURL           string `json:"avatarUrl,omitempty"`
 	Bio                 string `json:"bio,omitempty"`
+	IsAdmin             bool   `json:"isAdmin"`
 	IdempotencyKey      string `json:"idempotencyKey,omitempty"`
 }
 
