@@ -122,3 +122,54 @@ func TestEnsureTenant_ReturnsEnvelopeErrorEvenWhenHTTP200(t *testing.T) {
 		t.Fatalf("unexpected code: %s", apiErr.Code)
 	}
 }
+
+func TestEnsureServiceAccount_SendsExplicitNonAdminFlag(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Fatalf("expected POST, got %s", r.Method)
+		}
+		if r.URL.Path != "/api/internal/service-accounts/ensure" {
+			t.Fatalf("unexpected path: %s", r.URL.Path)
+		}
+
+		var body map[string]any
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			t.Fatalf("decode request: %v", err)
+		}
+		value, ok := body["isAdmin"].(bool)
+		if !ok {
+			t.Fatalf("expected isAdmin boolean in request body, got %#v", body["isAdmin"])
+		}
+		if value {
+			t.Fatalf("expected isAdmin=false")
+		}
+
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"data": map[string]any{
+				"serviceAccountId":            "svc-1",
+				"serviceAccountBindingStatus": "ready",
+				"arcubaseTenantId":            "tenant-1",
+				"tenantUserId":                "tu-1",
+				"externalSource":              "botworks",
+				"externalSubjectType":         "digiemployee",
+				"externalSubjectId":           "de-1",
+			},
+		})
+	}))
+	defer server.Close()
+
+	client := NewClient(Config{BaseURL: server.URL, InternalAuthKey: "secret"})
+	resp, err := client.EnsureServiceAccount(context.Background(), EnsureServiceAccountRequest{
+		ArcubaseTenantID:    "tenant-1",
+		ExternalSource:      "botworks",
+		ExternalSubjectType: "digiemployee",
+		ExternalSubjectID:   "de-1",
+		IsAdmin:             false,
+	})
+	if err != nil {
+		t.Fatalf("EnsureServiceAccount error: %v", err)
+	}
+	if resp.ServiceAccountID != "svc-1" {
+		t.Fatalf("unexpected service account id: %s", resp.ServiceAccountID)
+	}
+}
