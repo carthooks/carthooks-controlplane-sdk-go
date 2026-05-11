@@ -149,8 +149,7 @@ func TestEnsureServiceAccount_SendsExplicitNonAdminFlag(t *testing.T) {
 				"serviceAccountId":            "svc-1",
 				"serviceAccountBindingStatus": "ready",
 				"arcubaseTenantId":            "tenant-1",
-				"tenantUserId":                "tu-1",
-				"tenantUserNumericId":         123,
+				"tenantUserId":                "123",
 				"externalSource":              "botworks",
 				"externalSubjectType":         "digiemployee",
 				"externalSubjectId":           "de-1",
@@ -173,7 +172,7 @@ func TestEnsureServiceAccount_SendsExplicitNonAdminFlag(t *testing.T) {
 	if resp.ServiceAccountID != "svc-1" {
 		t.Fatalf("unexpected service account id: %s", resp.ServiceAccountID)
 	}
-	if resp.TenantUserNumericID != 123 {
-		t.Fatalf("unexpected tenant user numeric id: %d", resp.TenantUserNumericID)
+	if resp.TenantUserID != "123" {
+		t.Fatalf("unexpected tenant user id: %s", resp.TenantUserID)
 	}
 }

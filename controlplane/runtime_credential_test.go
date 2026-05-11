@@ -35,6 +35,7 @@ func TestIssueServiceAccountRuntimeCredential(t *testing.T) {
 				"accessToken":    "token-1",
 				"expiresAt":      time.Date(2026, 5, 1, 12, 0, 0, 0, time.UTC).Format(time.RFC3339),
 				"scope":          []string{"rows:read"},
+				"tenantUserId":   "123",
 			},
 		})
 	}))
@@ -50,6 +51,9 @@ func TestIssueServiceAccountRuntimeCredential(t *testing.T) {
 	}
 	if resp.AccessToken != "token-1" {
 		t.Fatalf("unexpected token: %s", resp.AccessToken)
+	}
+	if resp.TenantUserID != "123" {
+		t.Fatalf("unexpected tenant user id: %s", resp.TenantUserID)
 	}
 }
 
