@@ -85,6 +85,79 @@ type IssueRuntimeSessionRequest struct {
 
 type RuntimeSessionResponse = ServiceAccountRuntimeCredentialResponse
 
+type EnsureTenantUserRequest struct {
+	ArcubaseTenantID    string `json:"arcubaseTenantId" binding:"required"`
+	ExternalSource      string `json:"externalSource" binding:"required"`
+	ExternalSubjectType string `json:"externalSubjectType" binding:"required"`
+	ExternalSubjectID   string `json:"externalSubjectId" binding:"required"`
+	DisplayName         string `json:"displayName,omitempty"`
+	Email               string `json:"email,omitempty"`
+	Mobile              string `json:"mobile,omitempty"`
+	AvatarURL           string `json:"avatarUrl,omitempty"`
+	IdempotencyKey      string `json:"idempotencyKey,omitempty"`
+}
+
+type TenantUserControlPlaneResponse struct {
+	ArcubaseTenantID    string `json:"arcubaseTenantId"`
+	TenantUserID        string `json:"tenantUserId"`
+	BindingStatus       string `json:"bindingStatus"`
+	Created             bool   `json:"created"`
+	ExternalSource      string `json:"externalSource"`
+	ExternalSubjectType string `json:"externalSubjectType"`
+	ExternalSubjectID   string `json:"externalSubjectId"`
+	DisplayName         string `json:"displayName"`
+	Email               string `json:"email"`
+	Mobile              string `json:"mobile"`
+}
+
+type TenantDepartmentItem struct {
+	ID             string                 `json:"id"`
+	Name           string                 `json:"name"`
+	ParentID       string                 `json:"parentId"`
+	Depth          int                    `json:"depth"`
+	Path           string                 `json:"path"`
+	Children       []TenantDepartmentItem `json:"children,omitempty"`
+	ChildDeptCount int                    `json:"childDeptCount"`
+}
+
+type ListTenantDepartmentsResponse struct {
+	Items []TenantDepartmentItem `json:"items"`
+}
+
+type GetTenantDepartmentPathsRequest struct {
+	ArcubaseTenantID string   `json:"arcubaseTenantId" binding:"required"`
+	DepartmentIDs    []string `json:"departmentIds"`
+}
+
+type GetTenantDepartmentPathsResponse struct {
+	Paths [][]TenantDepartmentItem `json:"paths"`
+}
+
+type CreateTenantDepartmentRequest struct {
+	Name     string `json:"name" binding:"required"`
+	ParentID string `json:"parentId" binding:"required"`
+}
+
+type RenameTenantDepartmentRequest struct {
+	Name string `json:"name" binding:"required"`
+}
+
+type RelocateTenantDepartmentRequest struct {
+	TargetID string `json:"targetId" binding:"required"`
+	Type     string `json:"type" binding:"required"`
+}
+
+type TenantUserDepartmentsResponse struct {
+	ArcubaseTenantID string   `json:"arcubaseTenantId"`
+	TenantUserID     string   `json:"tenantUserId"`
+	DepartmentIDs    []string `json:"departmentIds"`
+}
+
+type UpdateTenantUserDepartmentsRequest struct {
+	ArcubaseTenantID string   `json:"arcubaseTenantId" binding:"required"`
+	DepartmentIDs    []string `json:"departmentIds"`
+}
+
 type envelopeError struct {
 	Code    string `json:"code"`
 	Key     string `json:"key"`

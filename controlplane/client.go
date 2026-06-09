@@ -80,6 +80,53 @@ func (c *Client) IssueRuntimeSession(ctx context.Context, req IssueRuntimeSessio
 	return doJSON[IssueRuntimeSessionRequest, RuntimeSessionResponse](ctx, c, http.MethodPost, "/api/internal/runtime-sessions/issue", req, nil)
 }
 
+func (c *Client) EnsureTenantUser(ctx context.Context, req EnsureTenantUserRequest) (*TenantUserControlPlaneResponse, error) {
+	return doJSON[EnsureTenantUserRequest, TenantUserControlPlaneResponse](ctx, c, http.MethodPost, "/api/internal/tenant-users/ensure", req, nil)
+}
+
+func (c *Client) ListTenantDepartments(ctx context.Context, arcubaseTenantID string) (*ListTenantDepartmentsResponse, error) {
+	path := fmt.Sprintf("/api/internal/tenants/%s/departments/tree", url.PathEscape(strings.TrimSpace(arcubaseTenantID)))
+	return doJSON[struct{}, ListTenantDepartmentsResponse](ctx, c, http.MethodGet, path, struct{}{}, nil)
+}
+
+func (c *Client) GetTenantDepartmentPaths(ctx context.Context, req GetTenantDepartmentPathsRequest) (*GetTenantDepartmentPathsResponse, error) {
+	path := fmt.Sprintf("/api/internal/tenants/%s/departments/paths", url.PathEscape(strings.TrimSpace(req.ArcubaseTenantID)))
+	return doJSON[GetTenantDepartmentPathsRequest, GetTenantDepartmentPathsResponse](ctx, c, http.MethodPost, path, req, nil)
+}
+
+func (c *Client) CreateTenantDepartment(ctx context.Context, arcubaseTenantID string, req CreateTenantDepartmentRequest) (*TenantDepartmentItem, error) {
+	path := fmt.Sprintf("/api/internal/tenants/%s/departments", url.PathEscape(strings.TrimSpace(arcubaseTenantID)))
+	return doJSON[CreateTenantDepartmentRequest, TenantDepartmentItem](ctx, c, http.MethodPost, path, req, nil)
+}
+
+func (c *Client) RenameTenantDepartment(ctx context.Context, arcubaseTenantID, departmentID string, req RenameTenantDepartmentRequest) (*TenantDepartmentItem, error) {
+	path := fmt.Sprintf("/api/internal/tenants/%s/departments/%s/rename", url.PathEscape(strings.TrimSpace(arcubaseTenantID)), url.PathEscape(strings.TrimSpace(departmentID)))
+	return doJSON[RenameTenantDepartmentRequest, TenantDepartmentItem](ctx, c, http.MethodPut, path, req, nil)
+}
+
+func (c *Client) DeleteTenantDepartment(ctx context.Context, arcubaseTenantID, departmentID string) error {
+	path := fmt.Sprintf("/api/internal/tenants/%s/departments/%s", url.PathEscape(strings.TrimSpace(arcubaseTenantID)), url.PathEscape(strings.TrimSpace(departmentID)))
+	_, err := doJSON[struct{}, bool](ctx, c, http.MethodDelete, path, struct{}{}, nil)
+	return err
+}
+
+func (c *Client) RelocateTenantDepartment(ctx context.Context, arcubaseTenantID, departmentID string, req RelocateTenantDepartmentRequest) (*TenantDepartmentItem, error) {
+	path := fmt.Sprintf("/api/internal/tenants/%s/departments/%s/relocate", url.PathEscape(strings.TrimSpace(arcubaseTenantID)), url.PathEscape(strings.TrimSpace(departmentID)))
+	return doJSON[RelocateTenantDepartmentRequest, TenantDepartmentItem](ctx, c, http.MethodPut, path, req, nil)
+}
+
+func (c *Client) GetTenantUserDepartments(ctx context.Context, tenantUserID string, arcubaseTenantID string) (*TenantUserDepartmentsResponse, error) {
+	params := url.Values{}
+	params.Set("arcubaseTenantId", strings.TrimSpace(arcubaseTenantID))
+	path := fmt.Sprintf("/api/internal/tenant-users/%s/departments", url.PathEscape(strings.TrimSpace(tenantUserID)))
+	return doJSON[struct{}, TenantUserDepartmentsResponse](ctx, c, http.MethodGet, path, struct{}{}, params)
+}
+
+func (c *Client) UpdateTenantUserDepartments(ctx context.Context, tenantUserID string, req UpdateTenantUserDepartmentsRequest) (*TenantUserDepartmentsResponse, error) {
+	path := fmt.Sprintf("/api/internal/tenant-users/%s/departments", url.PathEscape(strings.TrimSpace(tenantUserID)))
+	return doJSON[UpdateTenantUserDepartmentsRequest, TenantUserDepartmentsResponse](ctx, c, http.MethodPut, path, req, nil)
+}
+
 func doJSON[Req any, Resp any](ctx context.Context, c *Client, method, path string, reqBody Req, params url.Values) (*Resp, error) {
 	fullURL, err := url.JoinPath(c.baseURL, path)
 	if err != nil {
