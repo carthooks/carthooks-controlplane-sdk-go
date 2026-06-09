@@ -28,6 +28,7 @@ type TenantControlPlaneResponse struct {
 	ArcubaseTenantSlug  string `json:"arcubaseTenantSlug"`
 	ArcubaseInstanceID  string `json:"arcubaseInstanceId"`
 	TenantBindingStatus string `json:"tenantBindingStatus"`
+	TenantReady         bool   `json:"tenantReady"`
 	Created             bool   `json:"created"`
 }
 

@@ -37,7 +37,9 @@ func TestEnsureTenant(t *testing.T) {
 		_ = json.NewEncoder(w).Encode(map[string]any{
 			"data": map[string]any{
 				"arcubaseTenantId":    "tenant-1",
+				"arcubaseInstanceId":  "tenant-1-instance",
 				"tenantBindingStatus": "ready",
+				"tenantReady":         true,
 				"created":             true,
 			},
 		})
@@ -55,6 +57,12 @@ func TestEnsureTenant(t *testing.T) {
 	}
 	if resp.ArcubaseTenantID != "tenant-1" {
 		t.Fatalf("unexpected tenant id: %s", resp.ArcubaseTenantID)
+	}
+	if !resp.TenantReady {
+		t.Fatalf("expected tenantReady=true")
+	}
+	if resp.ArcubaseInstanceID != "tenant-1-instance" {
+		t.Fatalf("unexpected instance id: %s", resp.ArcubaseInstanceID)
 	}
 }
 
