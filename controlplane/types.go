@@ -95,6 +95,7 @@ type EnsureTenantUserRequest struct {
 	Email               string `json:"email,omitempty"`
 	Mobile              string `json:"mobile,omitempty"`
 	AvatarURL           string `json:"avatarUrl,omitempty"`
+	IsAdmin             bool   `json:"isAdmin"`
 	IdempotencyKey      string `json:"idempotencyKey,omitempty"`
 }
 
