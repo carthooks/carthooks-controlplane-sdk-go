@@ -110,6 +110,7 @@ type TenantUserControlPlaneResponse struct {
 	DisplayName         string `json:"displayName"`
 	Email               string `json:"email"`
 	Mobile              string `json:"mobile"`
+	IsAdmin             bool   `json:"isAdmin"`
 }
 
 type TenantDepartmentItem struct {
