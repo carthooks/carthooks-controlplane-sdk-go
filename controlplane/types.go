@@ -52,7 +52,7 @@ type ServiceAccountControlPlaneResponse struct {
 	ProfileSynced               bool       `json:"profileSynced"`
 	Created                     bool       `json:"created"`
 	ArcubaseTenantID            string     `json:"arcubaseTenantId"`
-	TenantUserID                string     `json:"tenantUserId"`
+	ArcubaseUserID              string     `json:"arcubaseUserId"`
 	ExternalSource              string     `json:"externalSource"`
 	ExternalSubjectType         string     `json:"externalSubjectType"`
 	ExternalSubjectID           string     `json:"externalSubjectId"`
@@ -72,7 +72,7 @@ type ServiceAccountRuntimeCredentialResponse struct {
 	AccessToken    string    `json:"accessToken"`
 	ExpiresAt      time.Time `json:"expiresAt"`
 	Scope          []string  `json:"scope"`
-	TenantUserID   string    `json:"tenantUserId"`
+	ArcubaseUserID string    `json:"arcubaseUserId"`
 	SubjectType    string    `json:"subjectType,omitempty"`
 	SubjectID      string    `json:"subjectId,omitempty"`
 }
@@ -101,7 +101,7 @@ type EnsureTenantUserRequest struct {
 
 type TenantUserControlPlaneResponse struct {
 	ArcubaseTenantID    string `json:"arcubaseTenantId"`
-	TenantUserID        string `json:"tenantUserId"`
+	ArcubaseUserID      string `json:"arcubaseUserId"`
 	BindingStatus       string `json:"bindingStatus"`
 	Created             bool   `json:"created"`
 	ExternalSource      string `json:"externalSource"`
@@ -152,7 +152,7 @@ type RelocateTenantDepartmentRequest struct {
 
 type TenantUserDepartmentsResponse struct {
 	ArcubaseTenantID string   `json:"arcubaseTenantId"`
-	TenantUserID     string   `json:"tenantUserId"`
+	ArcubaseUserID   string   `json:"arcubaseUserId"`
 	DepartmentIDs    []string `json:"departmentIds"`
 }
 

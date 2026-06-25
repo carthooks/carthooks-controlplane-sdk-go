@@ -35,7 +35,7 @@ func TestIssueRuntimeSession(t *testing.T) {
 				"accessToken":    "token-1",
 				"expiresAt":      time.Date(2026, 5, 1, 12, 0, 0, 0, time.UTC).Format(time.RFC3339),
 				"scope":          []string{"admin:runtime"},
-				"tenantUserId":   "123",
+				"arcubaseUserId": "123",
 				"subjectType":    "system_admin",
 				"subjectId":      "admin-1",
 			},
@@ -55,7 +55,7 @@ func TestIssueRuntimeSession(t *testing.T) {
 	if resp.AccessToken != "token-1" {
 		t.Fatalf("unexpected token: %s", resp.AccessToken)
 	}
-	if resp.TenantUserID != "123" {
-		t.Fatalf("unexpected tenant user id: %s", resp.TenantUserID)
+	if resp.ArcubaseUserID != "123" {
+		t.Fatalf("unexpected arcubase user id: %s", resp.ArcubaseUserID)
 	}
 }
