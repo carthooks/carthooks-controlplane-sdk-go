@@ -58,6 +58,10 @@ func (c *Client) RenameTenantDepartment(ctx context.Context, arcubaseTenantID, d
 	return doJSON[RenameTenantDepartmentRequest, TenantDepartmentItem](ctx, c, http.MethodPut, fmt.Sprintf("/api/internal/tenants/%s/departments/%s/rename", url.PathEscape(strings.TrimSpace(arcubaseTenantID)), url.PathEscape(strings.TrimSpace(departmentID))), req, nil)
 }
 
+func (c *Client) RenameTenantOrganizationRole(ctx context.Context, arcubaseTenantID, roleID string, req RenameTenantOrganizationRoleRequest) (*TenantOrganizationRole, error) {
+	return doJSON[RenameTenantOrganizationRoleRequest, TenantOrganizationRole](ctx, c, http.MethodPut, fmt.Sprintf("/api/internal/tenants/%s/organization/roles/%s/rename", url.PathEscape(strings.TrimSpace(arcubaseTenantID)), url.PathEscape(strings.TrimSpace(roleID))), req, nil)
+}
+
 func (c *Client) DeleteTenantDepartment(ctx context.Context, arcubaseTenantID, departmentID string) error {
 	_, err := doJSON[struct{}, bool](ctx, c, http.MethodDelete, fmt.Sprintf("/api/internal/tenants/%s/departments/%s", url.PathEscape(strings.TrimSpace(arcubaseTenantID)), url.PathEscape(strings.TrimSpace(departmentID))), struct{}{}, nil)
 	return err
@@ -75,4 +79,8 @@ func (c *Client) GetTenantUserDepartments(ctx context.Context, tenantUserID stri
 
 func (c *Client) UpdateTenantUserDepartments(ctx context.Context, tenantUserID string, req UpdateTenantUserDepartmentsRequest) (*TenantUserDepartmentsResponse, error) {
 	return doJSON[UpdateTenantUserDepartmentsRequest, TenantUserDepartmentsResponse](ctx, c, http.MethodPut, fmt.Sprintf("/api/internal/tenant-users/%s/departments", url.PathEscape(strings.TrimSpace(tenantUserID))), req, nil)
+}
+
+func (c *Client) DisableTenantUser(ctx context.Context, tenantUserID string, req DisableTenantUserRequest) (*DisableTenantUserResponse, error) {
+	return doJSON[DisableTenantUserRequest, DisableTenantUserResponse](ctx, c, http.MethodPost, fmt.Sprintf("/api/internal/tenant-users/%s/disable", url.PathEscape(strings.TrimSpace(tenantUserID))), req, nil)
 }

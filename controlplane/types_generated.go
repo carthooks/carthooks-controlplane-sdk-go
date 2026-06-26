@@ -79,6 +79,10 @@ type RelocateTenantDepartmentRequest struct {
 	Type     string `json:"type"`
 }
 
+type RenameTenantOrganizationRoleRequest struct {
+	Name string `json:"name"`
+}
+
 type RenameTenantDepartmentRequest struct {
 	Name string `json:"name"`
 }
@@ -138,6 +142,11 @@ type TenantDepartmentItem struct {
 	Path           string                 `json:"path"`
 }
 
+type TenantOrganizationRole struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 type TenantUserControlPlaneResponse struct {
 	ArcubaseTenantID    string `json:"arcubaseTenantId"`
 	BindingStatus       string `json:"bindingStatus"`
@@ -161,4 +170,14 @@ type TenantUserDepartmentsResponse struct {
 type UpdateTenantUserDepartmentsRequest struct {
 	ArcubaseTenantID string   `json:"arcubaseTenantId"`
 	DepartmentIDs    []string `json:"departmentIds"`
+}
+
+type DisableTenantUserRequest struct {
+	ArcubaseTenantID string `json:"arcubaseTenantId"`
+}
+
+type DisableTenantUserResponse struct {
+	ArcubaseTenantID string `json:"arcubaseTenantId"`
+	Disabled         bool   `json:"disabled"`
+	TenantUserID     string `json:"tenantUserId"`
 }
