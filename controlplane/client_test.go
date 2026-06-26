@@ -157,7 +157,7 @@ func TestEnsureServiceAccount_SendsExplicitNonAdminFlag(t *testing.T) {
 				"serviceAccountId":            "svc-1",
 				"serviceAccountBindingStatus": "ready",
 				"arcubaseTenantId":            "tenant-1",
-				"arcubaseUserId":              "123",
+				"tenantUserId":                "123",
 				"externalSource":              "botworks",
 				"externalSubjectType":         "digiemployee",
 				"externalSubjectId":           "de-1",
@@ -180,8 +180,8 @@ func TestEnsureServiceAccount_SendsExplicitNonAdminFlag(t *testing.T) {
 	if resp.ServiceAccountID != "svc-1" {
 		t.Fatalf("unexpected service account id: %s", resp.ServiceAccountID)
 	}
-	if resp.ArcubaseUserID != "123" {
-		t.Fatalf("unexpected arcubase user id: %s", resp.ArcubaseUserID)
+	if resp.TenantUserID != "123" {
+		t.Fatalf("unexpected tenant user id: %s", resp.TenantUserID)
 	}
 }
 
@@ -211,7 +211,7 @@ func TestEnsureTenantUser(t *testing.T) {
 		_ = json.NewEncoder(w).Encode(map[string]any{
 			"data": map[string]any{
 				"arcubaseTenantId":    "tenant-1",
-				"arcubaseUserId":      "2188889901",
+				"tenantUserId":        "2188889901",
 				"bindingStatus":       "ready",
 				"created":             true,
 				"externalSource":      "botworks",
@@ -236,8 +236,8 @@ func TestEnsureTenantUser(t *testing.T) {
 	if err != nil {
 		t.Fatalf("EnsureTenantUser error: %v", err)
 	}
-	if resp.ArcubaseUserID != "2188889901" {
-		t.Fatalf("unexpected arcubase user id: %s", resp.ArcubaseUserID)
+	if resp.TenantUserID != "2188889901" {
+		t.Fatalf("unexpected tenant user id: %s", resp.TenantUserID)
 	}
 	if !resp.Created {
 		t.Fatalf("expected created=true")
@@ -402,7 +402,7 @@ func TestTenantUserDepartmentsClientMethods(t *testing.T) {
 			_ = json.NewEncoder(w).Encode(map[string]any{
 				"data": map[string]any{
 					"arcubaseTenantId": "tenant-1",
-					"arcubaseUserId":   "2188889901",
+					"tenantUserId":     "2188889901",
 					"departmentIds":    []string{"1", "2"},
 				},
 			})
@@ -417,7 +417,7 @@ func TestTenantUserDepartmentsClientMethods(t *testing.T) {
 			_ = json.NewEncoder(w).Encode(map[string]any{
 				"data": map[string]any{
 					"arcubaseTenantId": "tenant-1",
-					"arcubaseUserId":   "2188889901",
+					"tenantUserId":     "2188889901",
 					"departmentIds":    []string{"2"},
 				},
 			})
