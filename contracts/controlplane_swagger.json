@@ -4,6 +4,45 @@
         "contact": {}
     },
     "paths": {
+        "/api/internal/runtime-sessions/issue": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Issue runtime session request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.IssueRuntimeSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/internal/service-accounts/ensure": {
             "post": {
                 "consumes": [
@@ -135,6 +174,133 @@
                 }
             }
         },
+        "/api/internal/tenant-users/ensure": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Ensure tenant user request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.EnsureTenantUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/tenant-users/{tenant_user_id}/departments": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tenant user id",
+                        "name": "tenant_user_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Arcubase tenant id",
+                        "name": "arcubaseTenantId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tenant user id",
+                        "name": "tenant_user_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update tenant user departments request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.UpdateTenantUserDepartmentsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/internal/tenants/ensure": {
             "post": {
                 "consumes": [
@@ -224,6 +390,285 @@
                     }
                 }
             }
+        },
+        "/api/internal/tenants/{arcubase_tenant_id}/departments": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Arcubase tenant id",
+                        "name": "arcubase_tenant_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Create department request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.CreateTenantDepartmentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/tenants/{arcubase_tenant_id}/departments/paths": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Arcubase tenant id",
+                        "name": "arcubase_tenant_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Department path request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.GetTenantDepartmentPathsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/tenants/{arcubase_tenant_id}/departments/tree": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Arcubase tenant id",
+                        "name": "arcubase_tenant_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/tenants/{arcubase_tenant_id}/departments/{department_id}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Arcubase tenant id",
+                        "name": "arcubase_tenant_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Department id",
+                        "name": "department_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/tenants/{arcubase_tenant_id}/departments/{department_id}/relocate": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Arcubase tenant id",
+                        "name": "arcubase_tenant_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Department id",
+                        "name": "department_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Relocate department request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.RelocateTenantDepartmentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/internal/tenants/{arcubase_tenant_id}/departments/{department_id}/rename": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ControlPlane"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Internal control-plane secret",
+                        "name": "X-Internal-Auth",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Arcubase tenant id",
+                        "name": "arcubase_tenant_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Department id",
+                        "name": "department_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Rename department request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.RenameTenantDepartmentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pin.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -257,14 +702,28 @@
                 }
             }
         },
+        "vo.CreateTenantDepartmentRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "parentId"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "parentId": {
+                    "type": "string"
+                }
+            }
+        },
         "vo.EnsureServiceAccountRequest": {
             "type": "object",
             "required": [
                 "arcubaseTenantId",
                 "externalSource",
                 "externalSubjectId",
-                "externalSubjectType",
-                "isAdmin"
+                "externalSubjectType"
             ],
             "properties": {
                 "arcubaseTenantId": {
@@ -324,6 +783,103 @@
                 }
             }
         },
+        "vo.EnsureTenantUserRequest": {
+            "type": "object",
+            "required": [
+                "arcubaseTenantId",
+                "externalSource",
+                "externalSubjectId",
+                "externalSubjectType"
+            ],
+            "properties": {
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "avatarUrl": {
+                    "type": "string"
+                },
+                "displayName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "externalSource": {
+                    "type": "string"
+                },
+                "externalSubjectId": {
+                    "type": "string"
+                },
+                "externalSubjectType": {
+                    "type": "string"
+                },
+                "idempotencyKey": {
+                    "type": "string"
+                },
+                "isAdmin": {
+                    "type": "boolean"
+                },
+                "mobile": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.GetTenantDepartmentPathsRequest": {
+            "type": "object",
+            "required": [
+                "arcubaseTenantId"
+            ],
+            "properties": {
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "departmentIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "vo.GetTenantDepartmentPathsResponse": {
+            "type": "object",
+            "properties": {
+                "paths": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/vo.TenantDepartmentItem"
+                        }
+                    }
+                }
+            }
+        },
+        "vo.IssueRuntimeSessionRequest": {
+            "type": "object",
+            "required": [
+                "arcubaseTenantId",
+                "requestedScope",
+                "subjectType"
+            ],
+            "properties": {
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "requestedScope": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "subjectId": {
+                    "type": "string"
+                },
+                "subjectType": {
+                    "type": "string"
+                }
+            }
+        },
         "vo.IssueServiceAccountRuntimeCredentialRequest": {
             "type": "object",
             "required": [
@@ -339,6 +895,72 @@
                     "items": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "vo.ListTenantDepartmentsResponse": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.TenantDepartmentItem"
+                    }
+                }
+            }
+        },
+        "vo.RelocateTenantDepartmentRequest": {
+            "type": "object",
+            "required": [
+                "targetId",
+                "type"
+            ],
+            "properties": {
+                "targetId": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.RenameTenantDepartmentRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.RuntimeSessionResponse": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string"
+                },
+                "credentialType": {
+                    "type": "string"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "subjectId": {
+                    "type": "string"
+                },
+                "subjectType": {
+                    "type": "string"
+                },
+                "tenantUserId": {
+                    "type": "string"
                 }
             }
         },
@@ -403,6 +1025,15 @@
                     "items": {
                         "type": "string"
                     }
+                },
+                "subjectId": {
+                    "type": "string"
+                },
+                "subjectType": {
+                    "type": "string"
+                },
+                "tenantUserId": {
+                    "type": "string"
                 }
             }
         },
@@ -423,6 +1054,110 @@
                 },
                 "tenantBindingStatus": {
                     "type": "string"
+                },
+                "tenantReady": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "vo.TenantDepartmentItem": {
+            "type": "object",
+            "properties": {
+                "childDeptCount": {
+                    "type": "integer"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.TenantDepartmentItem"
+                    }
+                },
+                "depth": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parentId": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.TenantUserControlPlaneResponse": {
+            "type": "object",
+            "properties": {
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "bindingStatus": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "boolean"
+                },
+                "displayName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "externalSource": {
+                    "type": "string"
+                },
+                "externalSubjectId": {
+                    "type": "string"
+                },
+                "externalSubjectType": {
+                    "type": "string"
+                },
+                "isAdmin": {
+                    "type": "boolean"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "tenantUserId": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.TenantUserDepartmentsResponse": {
+            "type": "object",
+            "properties": {
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "departmentIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tenantUserId": {
+                    "type": "string"
+                }
+            }
+        },
+        "vo.UpdateTenantUserDepartmentsRequest": {
+            "type": "object",
+            "required": [
+                "arcubaseTenantId"
+            ],
+            "properties": {
+                "arcubaseTenantId": {
+                    "type": "string"
+                },
+                "departmentIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         }

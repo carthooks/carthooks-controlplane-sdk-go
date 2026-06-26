@@ -1,6 +1,6 @@
 ARCUBASE_ROOT ?=
 
-.PHONY: test sync-contract validate-contract
+.PHONY: test sync-contract validate-contract generate
 
 test:
 	go test ./...
@@ -10,3 +10,6 @@ sync-contract:
 
 validate-contract:
 	./scripts/validate-contract.sh "$(ARCUBASE_ROOT)"
+
+generate:
+	node ./scripts/generate-controlplane-sdk.mjs
